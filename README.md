@@ -3,7 +3,7 @@ A webpage created with the Flask framework that allows users to send and receive
 
 # What I learned
 * Practice Flask
-* Bootsrap Styling
+* Bootstrap Styling
 * Input Validations
 * Flash Messages
 * AJAX Callbacks
