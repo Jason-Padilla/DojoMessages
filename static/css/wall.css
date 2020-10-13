@@ -1,0 +1,75 @@
+body 
+{
+    background-image: url("/static/images/granite-bg.jpg");
+    color:white;
+}
+.granite-bg
+{
+    background-color:rgb(50, 51, 71);
+}
+.container
+{
+    padding:70px;
+}
+.navbar 
+{
+    padding: .5rem 1.5rem;
+}
+.navbar-expand-lg .navbar-nav .nav-link
+{
+    padding:.5rem 1.5rem;
+}
+.flash-messages
+{
+    color:red;
+}
+.container
+{
+    max-width: 1300px;
+    padding: 70px 0px 0px 0px;
+}
+#msg-count
+{
+    color:lightgreen;
+}
+.message-card .col-2,.message-card .col-8
+{
+    padding:0px;
+}
+.message-card
+{
+    color: #4a4b65;
+    padding:25px 10px 15px 10px;
+    margin-bottom:1.5rem;
+    border-radius: 1rem !important;
+    box-shadow: -0.0625rem 0 0.625rem 0 rgba(0,0,0,0.07),0.3125rem 1.25rem 2.5rem 0 rgba(0,0,0,0.04) !important;
+}
+.profile-image 
+{
+    width: 50px; border-radius:50%; border:1px solid lightgreen;
+}
+.col-8
+{
+    padding-left:1.5rem !important;
+    padding-right:.5rem !important;
+}
+.col-9
+{
+    padding-left:1.5rem !important;
+    padding-right:0px;
+}
+.bg-lightgray-box 
+{
+    background-color:lightgray;
+    border-radius: 1rem !important;
+    padding:1rem;
+}
+.col-6 
+{
+    padding-left:2rem !important;
+    padding-right:2rem !important;
+}
+.col-1 .btn
+{
+    padding:0px!important;
+}

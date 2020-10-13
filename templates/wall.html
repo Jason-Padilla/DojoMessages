@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    
+     <!-- JS, Popper.js, and jQuery -->
+     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    
+     <!-- CSS Styles -->
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/wall.css') }}">
+
+     <!-- Call Backs -->
+     <script src="{{ url_for('static', filename='send-realtime.js') }}"></script>
+     <script src="{{ url_for('static', filename='delete-realtime.js') }}"></script>
+     
+
+    <title>Message Board</title>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top granite-bg">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <a class="navbar-brand">Dojo Messages</a>
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          </ul>
+          <div class="form-inline my-2 my-lg-0">
+            <div id="profile-id" value = "{{profile['id']}}"></div>
+            <a class="navbar-brand mr-4">Welcome, {{profile['first_name']}}</a>
+            <a class="btn btn-outline-info my-2 my-sm-0" href="/logout">Logout</a>
+          </div>
+          
+        </div>
+      </nav>
+    <div class = "container mt-4">
+        <div class = "row">
+            <!-- Delete Message -->
+            <div id = "left-panel" class = "col-6 vh-100">
+                
+                <h1> <span id = "msg-count"> {{amount}} </span> Message(s) For You</h1>
+                {% for message in messages %}
+                    <form class = "delete-form message-card row bg-light" method = "post" action = "/delete/message">
+                        <div class = "col-2">
+                            <center>
+                                <img class = "profile-image" src="{{ url_for('static', filename='images/user-dark.jpg') }}">
+                                <p>{{message['from']}}</p>
+                            </center>
+                        </div>
+                        <div class = "col-9" >
+                            <small>{{message['created_at']}}</small>
+                            <div class = " col-12 bg-lightgray-box">
+                                {{message['message']}}
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <center>
+                                <input type="hidden" name = "message-id" value="{{message['id']}}">
+                                <button type="submit" class="btn" style="color:red">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                    </svg>
+                                </button>
+                            </center>
+                        </div>
+                    </form>
+                {% endfor %}
+            </div>
+            <!-- Send Message -->
+            <div id = "right-panel" class = "col-6 ">
+                <h1>Send Messages</h1>
+                <div id = "sentMsg"></div>
+                {% for user in users %}
+                    <form class = "send-form message-card row bg-light" method = "post" action = "{{'/%s/messages/send-message'%profile['id']}}">
+                        <div class = "col-2">
+                            <center>
+                                <img class = "profile-image" src="{{ url_for('static', filename='images/user-dark.jpg') }}">
+                                <p>{{user['first_name'] + " "+user['last_name']}}</p>
+                            </center>
+                        </div>
+                        <div class = "col-8">
+                              <textarea class="form-control" name="message" id="" rows="3"></textarea> 
+                        </div>
+                        <div class="col-2">
+                            <input type="hidden" name = "from" value="{{profile['first_name'] + ' ' + profile['last_name']}}">
+                            <input type="hidden" name = "to-id" value="{{user['id']}}">
+                            <center>
+                                <button type = "submit" class="btn btn-outline-success my-2 my-sm-0">send</button>
+                            </center>
+                        </div>
+                    </form>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
